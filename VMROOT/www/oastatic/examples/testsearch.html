@@ -1,0 +1,72 @@
+<head>
+</head>
+<body>
+<script src="../lib/weaverlib.max.js"></script>
+
+<script>
+
+/*
+const context = new AudioContext;
+let rurl;  
+const oalinfo = new WeaverLib.effects.OpenAirLibInfo();
+// const presults = oalinfo.search( 'Minster' );
+const presults = oalinfo.list();
+presults.then( (results) => {
+  rurl = results[0].filepath;
+  let oalnode = new WeaverLib.effects.OpenAirLibInfo(constext,'www.openairlib.net/irserver',true);
+  oalnode.connect(context.destination);
+  return oalnode.load(rurl);
+}).catch( (err) => {
+  console.error(err);
+});
+*/
+
+const oaserver = 'http://www.openairlib.net/irserver';
+
+let openairinfo = new WeaverLib.effects.OpenAirLibInfo(oaserver);
+
+function consoleLogFileInfo(fileinfo) {
+  console.log ('' +
+  fileinfo.fid + ', ' +
+  fileinfo.nid + ', ' +
+  fileinfo.uid + ', ' +
+  fileinfo.title + ', ' +
+  fileinfo.filename + ', ' +
+  fileinfo.fs + ', ' +
+  fileinfo.chans + ', ' +
+  fileinfo.kftype + ', ' +
+  fileinfo.rt60_1K + ', ' +
+  fileinfo.SrcCat + ', ' +
+  fileinfo.GenVal + ', ' +
+  fileinfo.FrPg + ', ' +
+  fileinfo.email + ', ' +
+  fileinfo.cc_license
+  );
+}
+
+// some generic handlers
+const onaccept = val => {
+  console.log(`accept ${val}`);
+};
+
+const onreject = val => {
+  console.log(`reject ${val}`);
+};
+
+const onacceptlist = vals => {
+  // console.log(`accept ${vals}`); // Array[N] of Objects
+  let len = vals.length;
+  let i;
+  for (i=0; i<len; i++) {
+    let fileinfo = vals[i];
+    consoleLogFileInfo(fileinfo);   
+  }
+};
+
+
+openairinfo.search('Minster')
+.then(onacceptlist)
+.catch(onreject);
+
+</script>
+</body>

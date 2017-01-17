@@ -1,14 +1,83 @@
 # OpenAirLib
 
-# K Brown
-# University of York
-# 2016
+This repo contains
+ WeaverLib-js
+  which contains
+   OpenAirLibNode, 
+   OpenAirLibInfo,
+   and KXOmnitone classes,
 
-# Tree structure containing WeaverLib.js
-# which contains OpenAirLibNode and OpenAirLibInfo classes.
+VMROOT
+ a tree structure of files mirroring latest node server and examples structure on www.openairlib.net.
 
-# and in VMROOT: files mirroring new server and examples structure on www.openairlib.net.
+ KXOmnitone (in folder omnitone-0.1.6DEV : standalone build) 
+ 
+# WeaverLib-js
 
-# also includes:
-# KXOmnitone (in omnitone-0.1.6DEV as standalone, 
-# and also within WeaverLib-js/src/kx-omnitone.)
+  $ npm run webpack
+  creates weaverlib.js in /dist  
+
+# OpenAirLibInfo
+
+ Class to obtain information from oanodeserver described below.
+ Example
+  $ const ctx = new AudioContext();
+  $ const oalinfo = new WeaverLib.effects.OpenAirLibInfo();
+  $ const presults = oalinfo.search( 'Minster' );
+  $ let rurl;  
+  $ presults.then( (results) => {
+  $   console.log(results.rurl);
+  $ }
+  
+For more involved example see VMROOT/www/oastatic/examples/oalisttest.html
+ 
+# OpenAirLibNode
+
+Wrapper around one or more WAAPI ConvolverNodes to provide 1, 2 or 4 channel (FOA) Impulse response
+loading capabilities from curated IRs hosted on www.openairlib.net.
+
+Usage in .js
+  $ const node = new WeaverLib.effects.OpenAirLibNode();
+For more involved example see VMROOT/www/oastatic/examples/debugtest.html
+
+# oanodeserver
+
+The main commands available are as follows (relative to the www.openairlib.net/irserver URL)
+(All commands return JSON objects except where stated.)
+
+ $/server: returns the above root-URL.
+
+ $/ver: returns the version.
+
+ $/list: returns detailed information about all IRs.
+
+ $/search?d=titlestringtomatch:
+  returns detailed information on each RIR for which the title partially matches the
+  search text titlestringtomatch.
+
+ $/filefromrurl:
+  streams the RIR data if a file exists that matches that RURL (not JSON.)
+  
+The detailed information returned is an array of
+JSON objects each having eighteen fields, including:
+
+ $title: the title of the RIR.
+
+ $filepath: the relative-URL (RURL) of the
+
+ $RIR (this does not include the root URL portion.)
+
+ $fs: sampling frequency.
+
+ $chans: number of channels.
+
+ $RT60_1K: the 60dB decay time at 1kHz of the RIR.
+
+ $cc_license: the Creative Commons license type code.
+ 
+
+# LICENSE 
+Unless stated in local readme.md or in code header comments, all files license is Apache 2.
+
+# AUTHOR
+K Brown, University of York.
