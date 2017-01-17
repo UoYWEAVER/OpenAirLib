@@ -1,4 +1,4 @@
-# OpenAirLib
+# OpenAirLib #
 
 This repo contains
  WeaverLib-js
@@ -12,37 +12,49 @@ VMROOT
 
  KXOmnitone (in folder omnitone-0.1.6DEV : standalone build) 
  
-# WeaverLib-js
-
+## WeaverLib-js ##
+  JavaScript library, to build run
   $ npm run webpack
   creates weaverlib.js in /dist  
 
-# OpenAirLibInfo #
-
- Class to obtain information from oanodeserver described below.
+## OpenAirLibInfo ##
+ WeaverLib.effects.OpenAirLibInfo
+ JavaScript Class to obtain information from oanodeserver described below.
  Example
   const ctx = new AudioContext();
+  let rurl;
   const oalinfo = new WeaverLib.effects.OpenAirLibInfo();
-  const presults = oalinfo.search( 'Minster' );
-  presults.then( (results) => {
+  const presults = oalinfo.search('Minster');
+  presults.then((results) => {
+    rurl = results.filepath;
     console.log(results.rurl);
-  }
+  });
   
 For more involved example see VMROOT/www/oastatic/examples/oalisttest.html
  
 ## OpenAirLibNode ##
+ WeaverLib.effects.OpenAirLibNode
+ Wrapper around one or more WAAPI ConvolverNodes to provide 1, 2 or 4 channel (FOA) Impulse response
+ loading capabilities from curated IRs hosted on www.openairlib.net.
 
-Wrapper around one or more WAAPI ConvolverNodes to provide 1, 2 or 4 channel (FOA) Impulse response
-loading capabilities from curated IRs hosted on www.openairlib.net.
+ Usage in .js
 
-Usage in .js
-  const node = new WeaverLib.effects.OpenAirLibNode();
-For more involved example see VMROOT/www/oastatic/examples/debugtest.html
+  const ctx = new AudioContext();
+  ...
+  // create some nodes
+  ...
+  const oalnode = new WeaverLib.effects.OpenAirLibNode( ctx);
+  anothernode.connect(oalnode.input);
+  oalnode.output.connect(anothernode2);
+  oalnode.load( rurl );
+  // where rurl is a filepath fiels from an OpenAirLibInfo result
+    
+ For more involved example see VMROOT/www/oastatic/examples/debugtest.html
 
 ## oanodeserver ##
 
-The main commands available are as follows (relative to the www.openairlib.net/irserver URL)
-(All commands return JSON objects except where stated.)
+ The main commands available are as follows (relative to the www.openairlib.net/irserver URL)
+ (All commands return JSON objects except where stated.)
 
   /server: returns the above root-URL.
 
