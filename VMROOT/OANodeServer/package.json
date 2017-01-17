@@ -1,0 +1,19 @@
+{
+  "name": "OANodeServer",
+  "version": "1.0.5",
+  "description": "Open Air Node Server",
+  "main": "oanodeserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node oanodeserver"
+  },
+  "author": "KB/MP",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "fs": "0.0.2",
+    "nodemon": "^1.9.2",
+    "pg": "^6.0.1",
+    "pg-format": "^1.0.2"
+  }
+}

@@ -1,0 +1,41 @@
+<krpano>
+
+	<!-- use the videoplayer plugin as panoramic image -->
+	<image>
+		<sphere url="plugin:video" />
+	</image>
+
+  <!-- 			videourl="test1d.kava.amb.mp4" TEST1 aac -->
+  <!-- 			videourl="outputAmbixVorbis.mp4" TEST2 vorbis -->
+  <!-- 			videourl="ytr_sherlock_S1b_G.mp4" REAL (aac) -->
+
+
+	<plugin name="video"
+			url="videoplayer_basic_source.js"
+			videourl="outputAmbixVorbis.mp4"
+			devices="panovideosupport"
+      onvideoready="js( xmlvideoready() );"
+			/>
+			
+	
+	<!-- show an error when panoramic videos are not supported -->
+	<action name="no_pano_video_error" autorun="onstart" devices="no-panovideosupport">
+		error("Sorry, but your browser doesn't support panoramic videos!");
+	</action>
+	
+	
+	<!-- include a contextmenu with different projection settings -->
+	<include url="contextmenu.xml" />
+
+	
+	<!-- include gyro control -->
+	<include url="gyro.xml" />
+
+  <!-- !DURING DEV ONLY! force show info onviewchange -->
+  <!-- onviewchange="showlog(true);trace(view.hlookat);trace(view.vlookat);trace(view.fov);" -->
+  <!-- use 'o' keypress to turn on log display -->
+  <events
+    onviewchange="js( xmlonviewchange() );"
+  />	
+
+</krpano>

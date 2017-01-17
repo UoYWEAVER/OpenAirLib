@@ -1,0 +1,223 @@
+<!--
+  Copyright 2016 Google Inc. All Rights Reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>A Simple Demo: Omnitone</title>
+  <!--script src="../build/omnitone.min.js"></script-->
+  <script src="../build/kx-omnitone.max.js"></script>
+  <!--script src="gl-matrix.js"></script-->
+  <style>
+    h2 {
+      font-family: sans-serif;
+    }
+
+    button {
+      width: 120px;
+      height: 24px;
+      font-weight: bold;
+    }
+
+    select {
+      width: 120px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Select the sound source to play.</h2>
+  <h2>Use headphones for the full-sphere surround sound.</h2>
+  <br>
+  <select id="eSelectSource" name="dropdown" disabled>
+    <option value="speech" selected="selected">Speech</option>
+    <option value="warbird">Airplanes</option>
+  </select>
+  <button id="eButtonPlayback" disabled>Play</button>
+  <input type="range" name="azSlider" id="eAzSlider" value="0" min="-180" max="180">
+  <label for "eAzSlider">Az (-180:+180)</label>
+  <input type="range" name="elSlider" id="eElSlider" value="0" min="-80" max="80">
+  <label for "eElSlider">El (-80:+80)</label>
+  <script>
+    var audioSources = {
+      'speech': 'resources/4ch_B_FuMaNorm_FuMaOrd_speech.wav',
+      'warbird': 'resources/jlwarbirds3.amb'
+    };
+
+    var buttonPlayback, selectSource;
+    var slAz, slEl;
+    var myAz = 0
+    var myEl = 0;
+
+    var rpyd = {};
+    rpyd.r = 0;
+    rpyd.p = 0;
+    rpyd.y = 0;
+
+    var D2RFAC = 2*Math.PI/360;
+
+    rotationMatrix = new Float32Array(9); // dont need mat3 for now
+
+    window.addEventListener('load', function () {
+
+      // Set up the context and the audio element.
+      var audioContext = new AudioContext();
+      var audioElement = document.createElement('audio');
+      audioElement.loop = true;
+      audioElement.crossOrigin = 'anonymous';
+      audioElement.src = audioSources['speech'];
+
+
+      // Create a decoder.
+      var decoder = KXOmnitone.createFOADecoder(audioContext, {
+        // The example audio is in the FuMa ordering (W,X,Y,Z). So remap the
+        // channels to the ACN format.
+        channelMap: [0, 3, 1, 2]
+      });
+
+      var srcsig = audioContext.createMediaElementSource( audioElement );
+
+      // Handles UI.
+      buttonPlayback = document.getElementById('eButtonPlayback');
+      selectSource = document.getElementById('eSelectSource');
+
+      slAz = document.getElementById('eAzSlider');
+      slEl = document.getElementById('eElSlider');
+
+      buttonPlayback.onclick = function (event) {
+        if (event.target.textContent === 'Play') {
+          event.target.textContent = 'Pause';
+          audioElement.play();
+        } else {
+          event.target.textContent = 'Play';
+          audioElement.pause();
+        }
+      };
+
+      selectSource.onchange = function (event) {
+        audioElement.src = audioSources[event.target.value];
+        audioElement.load();
+        // do we need to redo & reconnect? srcsig = audioContext.createMediaElementSource( audioElement );
+        if (buttonPlayback.textContent === 'Pause')
+          audioElement.play();
+      };
+
+      slAz.onchange = function (event) {
+        var tmp = parseInt(event.target.value);
+        if ( tmp !== myAz ) {
+          myAz = tmp;
+          updateRotn();
+        }
+      };
+
+      slEl.onchange = function (event) {
+        var tmp = parseInt(event.target.value);
+        if ( tmp !== myEl ) {
+          myEl = tmp;
+          updateRotn();
+        }
+      };
+
+      function azelrolRot( rotationMatrix, myAz, myEl, myRo ) {
+        // https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions#Rotation_matrix
+
+        if (myRo != 0)
+          console.log('azelRot():roll not handled');
+
+        var sinaz = Math.sin(myAz*D2RFAC);
+        var cosaz = Math.cos(myAz*D2RFAC);
+        var sinel = Math.sin(myEl*D2RFAC);
+        var cosel = Math.cos(myEl*D2RFAC);
+        var cosro /*= cos(0)*/ = 1;
+        var sinro /*= sin(0)*/ = 0;
+
+        // these intermediate vals are row major
+        var e0 = (cosel * cosaz);
+        var e1 = (cosro * sinaz) + (sinro * sinel * cosaz);
+        var e2 = (sinro * sinaz) - (cosro * sinel * cosaz);
+        var e3 = (-cosel * sinaz);
+        var e4 = (cosro * cosaz) - (sinro * sinel * sinaz);
+        var e5 = (sinro * cosaz) + (cosro * sinel * sinaz);
+        var e6 = sinel;
+        var e7 = -sinro*cosel;
+        var e8 = cosro*cosel;
+
+        // now need to know which way round storage of mat3 is?
+        // MATLAB wants col/row orientated matrix
+        /*
+        this is row/col jic
+        rotationMatrix[0] = e0;
+        rotationMatrix[1] = e1;
+        rotationMatrix[2] = e2;
+        rotationMatrix[3] = e3;
+        rotationMatrix[4] = e4;
+        rotationMatrix[5] = e5;
+        rotationMatrix[6] = e6;
+        rotationMatrix[7] = e7;
+        rotationMatrix[8] = e8;
+        */
+
+        /* mat3 is col-major...
+        0 3 6
+        1 4 7
+        2 5 8
+        */
+
+        rotationMatrix[0] = e0;
+        rotationMatrix[3] = e1;
+        rotationMatrix[6] = e2;
+        rotationMatrix[1] = e3;
+        rotationMatrix[4] = e4;
+        rotationMatrix[7] = e5;
+        rotationMatrix[2] = e6;
+        rotationMatrix[5] = e7;
+        rotationMatrix[8] = e8;
+
+        // how to test this???
+        return rotationMatrix;
+      }
+
+      function updateRotn() {
+        if (decoder === undefined)
+          return;
+
+        //var rotationMatrix = mat3.create(); // identity
+        rotationMatrix = azelrolRot( rotationMatrix, myAz, myEl, 0 );
+        decoder.setRotationMatrix(rotationMatrix);
+      }
+
+      // Initialize the decoder and activate the button when ready.
+      decoder.initialize().then(function () {
+        decoder.setMode('ambisonic');
+        srcsig.connect( decoder.input );
+        decoder.output.connect( audioContext.destination );
+        var debtest;
+        debtest = false;
+        if (debtest) {
+          srcsig.connect( audioContext.destination );
+        }
+
+        buttonPlayback.disabled = false;
+        selectSource.disabled = false;
+      }, function (onInitializationError) {
+        console.error(onInitializationError);
+      });
+
+    }); // onload
+
+
+  </script>
+</body>
+</html>

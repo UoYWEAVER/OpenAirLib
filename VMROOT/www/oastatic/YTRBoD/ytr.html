@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>York Theatre Royal Box Office App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=edge" />
+	<style>
+		@-ms-viewport { width:device-width; }
+		@media only screen and (min-device-width:800px) { html { overflow:hidden; } }
+		html { height:100%; }
+		body { height:100%; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
+		a { color:#FFFFFF; }
+
+    #pano {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+	</style>
+  <!--script src="../lib/webvr-polyfill.js"></script>
+  < or just use THREE -->
+  <script src="../lib/three.min.js"></script> 
+  	
+  <script src="../lib/gl-matrix.js"></script>	
+  <!--script src="../lib/jquery-1.12.3.min.js"></script-->
+  <script src="../lib/omnitone-0.1.6.js"></script>
+  <!--script src="../lib/kx-omnitone.max.js"></script-->
+  	
+</head>
+<body>
+<script>
+kglobs = {};
+kglobs.created=1;
+kglobs.libpath="/irserver/oastatic/lib" // or just copy lib to irserver/oastatic for local...
+//kglobs.libpath="/lib" // LOCAL
+</script>
+<script src="krp-ubv.js"></script>
+
+<div id="pano">
+	<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;text-align:center;"><td>ERROR:<br><br>Javascript not activated<br><br></td></tr></table></noscript>
+	<script>
+		embedpano({xml:"ytr.xml", target:"pano", html5:"only", mobilescale:1.0, passQueryParameters:true, onready:krpanoReady});
+		function krpanoReady(krpano)
+    {
+      krpano.call("trace(krpano is ready...)");
+      console.log("krpano ready");
+    }
+	</script>
+</div>
+
+<script src="ytr.js"></script>
+
+</body>
+</html>

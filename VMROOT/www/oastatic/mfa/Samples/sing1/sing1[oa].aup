@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="sing1[oa]_data" version="1.3.0" audacityversion="2.1.1" sel0="2.3705262807" sel1="2.6757137958" vpos="0" h="0.0000000000" zoom="281.7939651007" rate="48000.0" snapto="off" selectionformat="samples" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<wavetrack name="singing" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="48000" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="524288" sampleformat="131073" numsamples="233873">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000723.au" len="233873" min="-0.448273" max="0.708618" rms="0.090308"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<labeltrack name="Label Track" numlabels="8" height="73" minimized="0" isSelected="0">
+		<label t="0.2413110585" t1="0.6316671826" title=""/>
+		<label t="0.6316671826" t1="0.9262086216" title=""/>
+		<label t="0.9262086216" t1="1.1781657563" title=""/>
+		<label t="1.1781657563" t1="1.5010967316" title=""/>
+		<label t="1.5437227027" t1="1.8307709244" title=""/>
+		<label t="1.8307709244" t1="2.3705262807" title=""/>
+		<label t="2.3705262807" t1="2.6757137958" title=""/>
+		<label t="2.6757137958" t1="4.0880932265" title=""/>
+	</labeltrack>
+</project>

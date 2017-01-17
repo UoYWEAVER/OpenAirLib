@@ -1,0 +1,154 @@
+<krpano>
+
+	<!-- use the videoplayer plugin as panoramic image -->
+	<image>
+		<sphere url="plugin:video" />
+	</image>
+
+  <!-- 			videourl="test1d.kava.amb.mp4" TEST1 aac -->
+  <!-- 			videourl="outputAmbixVorbis.mp4" TEST2 vorbis -->
+  <!-- 			videourl="ytr_sherlock_S1b_G.mp4" REAL (aac) -->
+
+
+	<plugin name="video"
+			url="videoplayer_basic_source.js"
+			videourl="ytr_sherlock_S1b_G.mp4"
+			devices="panovideosupport"
+      onvideoready="js( xmlvideoready() );"
+      zorder="100"
+			/>
+			
+	<autorotate enabled="false" />
+	
+	<!-- show an error when panoramic videos are not supported -->
+	<action name="no_pano_video_error" autorun="onstart" devices="no-panovideosupport">
+		error("Sorry, but your browser doesn't support panoramic videos!");
+	</action>
+	
+	
+	<!-- include a contextmenu with different projection settings -->
+	<include url="contextmenu.xml" />
+
+	
+	<!-- include gyro control -->
+	<include url="gyro.xml" />
+
+  <!-- !DURING DEV ONLY! force show info onviewchange -->
+  <!-- onviewchange="showlog(true);trace(view.hlookat);trace(view.vlookat);trace(view.fov);" -->
+  <!-- use 'o' keypress to turn on log display -->
+  <events
+    onviewchange="js( xmlonviewchange() );"
+  />
+  
+<plugin name="button1"
+        type="image"
+        url="button_gallery.png"
+        keep="true"
+        visible="true"
+        enabled="true"
+        handcursor="true"
+        maskchildren="false"
+        scalechildren="false"
+        zorder="200"
+        x="10"
+        y="10"
+        rotate="0.0"
+        width="100"
+        height="30"
+        scale="1.0"
+        alpha="1.0"
+        bgcolor="0x000000"
+        bgalpha="0.0"
+        bgborder="0"
+        bgroundedge="0"
+        bgcapture="false"
+        onclick="js( xmlonbutton1() );"
+        />  	
+<plugin name="button2"
+        type="image"
+        url="button_upper-circle.png"
+        keep="true"
+        visible="true"
+        enabled="true"
+        handcursor="true"
+        maskchildren="false"
+        scalechildren="false"
+        zorder="200"
+        x="130"
+        y="10"
+        rotate="0.0"
+        width="100"
+        height="30"
+        scale="1.0"
+        alpha="1.0"
+        bgcolor="0x000000"
+        bgalpha="0.0"
+        bgborder="0"
+        bgroundedge="0"
+        bgcapture="false"
+        onclick="js( xmlonbutton2() );"
+        />  	
+<plugin name="button3"
+        type="image"
+        url="button_dress-circle.png"
+        keep="true"
+        visible="true"
+        enabled="true"
+        handcursor="true"
+        maskchildren="false"
+        scalechildren="false"
+        zorder="200"
+        x="250"
+        y="10"
+        rotate="0.0"
+        width="100"
+        height="30"
+        scale="1.0"
+        alpha="1.0"
+        bgcolor="0x000000"
+        bgalpha="0.0"
+        bgborder="0"
+        bgroundedge="0"
+        bgcapture="false"
+        onclick="js( xmlonbutton3() );"
+        />  	
+<plugin name="button4"
+        type="image"
+        url="button_stalls.png"
+        keep="true"
+        visible="true"
+        enabled="true"
+        handcursor="true"
+        maskchildren="false"
+        scalechildren="false"
+        zorder="200"
+        x="370"
+        y="10"
+        rotate="0.0"
+        width="100"
+        height="30"
+        scale="1.0"
+        alpha="1.0"
+        bgcolor="0x000000"
+        bgalpha="0.0"
+        bgborder="0"
+        bgroundedge="0"
+        bgcapture="false"
+        onclick="js( xmlonbutton4() );"
+        />  	
+
+<view   fov="90"
+        fovmax="90"
+        fovmin="90"
+        mfovratio="1.333333"
+        distortion="0.0"
+        distortionfovlink="0.5"
+        stereographic="false"
+        pannini="0.0"
+        architectural="1.0"
+        architecturalonlymiddle="true"
+        limitview="auto"
+        
+        />
+        
+</krpano>

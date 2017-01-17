@@ -1,0 +1,22 @@
+<krpano>
+	
+	<plugin name="gyro" devices="html5"
+	        url="gyro2.js"
+	        enabled="false"
+	        onavailable="gyro_available_info();"
+	        autocalibration="false"
+	        />
+
+	<action name="gyro_available_info">
+		set(layer[gyrobutton].visible, true);
+	</action>
+	
+	<layer name="bottombar" type="container" bgcolor="0x000000" bgalpha="0.5" align="leftbottom" width="100%" height="40">
+		
+	  <layer name="gyrobutton" url="gyroicon.png" scale="0.5" align="right" x="10" visible="false" 
+		       onclick="switch(plugin[gyro].enabled);"
+		       />
+		       
+	</layer>
+
+</krpano>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="OpenAirCli">
+<meta name="keywords" content="OpenAirCli">
+<meta name="author" content="Ken Brown">
+<title>OpenAirCli Live Mic Convolution</title>
+<link rel="stylesheet" type="text/css" href="lmcstyle.css">
+</head>
+<body>
+
+<h1>OpenAirCli Live Mic Convolution<h1>
+
+<div><span>
+<button class="stdButton" id="poplist">Populate List</button>
+<!--
+<button class="stdButton" id="getinfo">Get Info</button>
+<button class="stdButton" id="useir">Use IR</button>
+-->
+</span></div>
+
+<div id='OpenAirIRnamesDiv'>
+<select class="placeholder" id="OpenAirIRnames">
+</select>
+</div>
+<br>
+<div>
+<textarea id="tainfo" rows="20" cols="200" placeholder="Info">
+</textarea>
+</div>
+
+<!--div id="form1">
+Test Server Calls
+<span>
+Mode: <input type="text" name="mode" value="0">
+Select: <input type="text" name="string">
+<input type="submit" value="Submit">
+</span>
+</div-->
+
+<script src="http://www.openairlib.net/irserver/oastatic/lib/weaverlib.js"></script>
+<script src="lmc.js"></script>
+</body>
+</html>

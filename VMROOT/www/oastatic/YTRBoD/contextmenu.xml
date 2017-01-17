@@ -1,0 +1,90 @@
+<krpano>
+
+	<!--
+		contextmenu.xml 1.18
+		- Change the control mode and the viewing projection via the right click contextmenu.
+		- The distorted view items will be only shown when Flash or WebGL are supported and when the
+		  pano image itself is a full 360x180 pano.
+		- Note: The distorted views will only work correctly when view.stereographic=true will be set.
+	-->
+
+	<contextmenu>
+		<item name="fs" caption="FULLSCREEN" />
+		<item name="cs" caption="Look Straight" onclick="cm_look_straight();"  separator="true" />
+		<item name="cacon" caption="Autocal On" onclick="cm_autocalon();" separator="true"  />
+		<item name="cacoff" caption="Autocal Off" onclick="cm_autocaloff();" />
+	</contextmenu>
+
+
+	<action name="cm_changecontrolmode">
+		switch(control.mousetype, moveto, drag2d);
+		switch(control.touchtype, moveto, drag2d);
+	</action>
+	
+	<action name="cm_autocalon">
+	  set( plugin[gyro].autocalibration,"true" );
+	</action>
+	
+	<action name="cm_autocaloff">
+	  set( plugin[gyro].autocalibration,"true" );
+	</action>
+
+	<action name="cm_look_straight">
+			tween(view.vlookat, 0.0, 0.3, easeInOutSine);
+			tween(view.hlookat, 0.0, 0.3, easeInOutSine);
+			plugin[gyro].resetSensor(0.0);
+	</action>
+
+	<action name="cm_fov_std">
+			tween(view.fov,     90, distance(150,0.8));
+	</action>
+
+
+	<action name="cm_normal_view">
+		cm_look_straight();
+		tween(view.architectural, 0.0, distance(1.0,0.5));
+		tween(view.pannini,       0.0, distance(1.0,0.5));
+		tween(view.fisheye,       0.0, distance(1.0,0.5));
+	</action>
+
+	<action name="cm_architectural_view">
+		cm_look_straight();
+		tween(view.architectural, 1.0, distance(1.0,0.5));
+		tween(view.pannini,       0.0, distance(1.0,0.5));
+		tween(view.fisheye,       0.0, distance(1.0,0.5));
+	</action>
+
+	<action name="cm_fisheye_view">
+		cm_look_straight();
+		tween(view.architectural, 0.0,  distance(1.0,0.5));
+		tween(view.pannini,       0.0,  distance(1.0,0.5));
+		tween(view.fisheye,       0.35, distance(1.0,0.5));
+	</action>
+
+	<action name="cm_stereographic_view">
+		cm_look_straight();
+		tween(view.architectural, 0.0, distance(1.0,0.5));
+		tween(view.pannini,       0.0, distance(1.0,0.5));
+		tween(view.fisheye,       1.0, distance(1.0,0.8));
+	</action>
+
+	<action name="cm_pannini_view">
+		cm_look_straight();
+		tween(view.architectural, 0.0, distance(1.0,0.5));
+		tween(view.pannini,       1.0, distance(1.0,0.8));
+		if(view.fisheye LT 0.1,
+			tween(view.fisheye, 1.0, distance(1.0,0.8));
+		  );
+	</action>
+
+	<action name="cm_littleplanet_view">
+		tween(view.architectural, 0.0, distance(1.0,0.5));
+		tween(view.pannini,       0.0, distance(1.0,0.5));
+		tween(view.fisheye,       1.0, distance(1.0,0.8));
+		tween(view.fov,           150, distance(150,0.8));
+		tween(view.vlookat,        90, distance(100,0.8));
+		add(new_hlookat, view.hlookat, 123.0);
+		tween(view.hlookat, get(new_hlookat), distance(100,0.8));
+	</action>
+
+</krpano>

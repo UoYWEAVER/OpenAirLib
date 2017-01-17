@@ -1,0 +1,6 @@
+.DS_Store
+.htaccess
+bak/
+*.bak
+node_modules/
+ARC/

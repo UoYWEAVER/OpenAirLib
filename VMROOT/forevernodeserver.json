@@ -1,0 +1,11 @@
+// forevernodeserver.json
+{
+    // Comments are supported
+    "uid": "oanodeserver",
+    "append": true,
+    "watch": true,
+    "fifo": true,
+    "script": "oanodeserver.js",
+    "sourceDir": "/home/dtm3/OANodeServer",
+    "workingDir": "/home/dtm3/www"
+}
